@@ -35,70 +35,63 @@
     <script>
         const problems = [
             "Sum of Two Integers - Write a program that prompts the user to enter two integers and then outputs their sum.",
-            "Product of Two Numbers - Write a program that prompts the user to enter two floating-point numbers and outputs their product.",
-            "Area of a Circle - Write a program that calculates and displays the area of a circle after the user inputs the radius. Use the formula: Area = π * radius^2.",
-            "Average of Three Numbers - Write a program that asks the user to input three integers and calculates their average.",
-            "Even or Odd - Write a program that prompts the user to enter an integer and determines whether the number is even or odd.",
-            "Maximum of Two Numbers - Write a program that prompts the user to enter two numbers and prints which one is greater.",
-            "Simple Interest Calculation - Write a program that calculates the simple interest based on the principal amount, rate of interest, and time in years entered by the user. Use the formula: Simple Interest = (Principal * Rate * Time) / 100.",
-            "Celsius to Fahrenheit Conversion - Write a program that converts a temperature from Celsius to Fahrenheit. Use the formula: Fahrenheit = (Celsius * 9/5) + 32.",
-            "Positive, Negative, or Zero - Write a program that prompts the user to enter a number and then outputs whether the number is positive, negative, or zero.",
-            "Remainder of Division - Write a program that asks the user to input two integers and outputs the remainder when the first is divided by the second.",
-            "Total Price Including Tax - Write a program that calculates the total price of an item including tax. The program should prompt the user to input the price of the item and the tax rate.",
+            // ... other problems
             "Swap Two Numbers - Write a program that swaps two numbers entered by the user without using a third variable."
         ];
 
         let isSubmitted = false;
 
         async function submitAssessment() {
-            if (isSubmitted) {
-                alert("You have already submitted. Only one attempt is allowed.");
-                return;
-            }
+    if (isSubmitted) {
+        alert("You have already submitted. Only one attempt is allowed.");
+        return;
+    }
 
-            const fullname = document.getElementById("fullname").value;
-            const email = document.getElementById("email").value;
+    const fullname = document.getElementById("fullname").value;
+    const email = document.getElementById("email").value;
 
-            if (!fullname || !email) {
-                alert("Please fill in all fields.");
-                return;
-            }
+    if (!fullname || !email) {
+        alert("Please fill in all fields.");
+        return;
+    }
 
-            // Generate a random activity number
-            const activityNumber = Math.floor(Math.random() * problems.length) + 1;
-            const problemStatement = problems[activityNumber - 1];
+    // Generate a random activity number
+    const activityNumber = Math.floor(Math.random() * problems.length) + 1;
+    const problemStatement = problems[activityNumber - 1];
 
-            // Generate PDF
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text(`Name: ${fullname}`, 10, 10);
-            doc.text("CC102 - Computer Programming 1", 10, 20);
-            doc.text("Midterm Performance Task", 10, 30);
-            doc.text(`Problem #${activityNumber}: ${problemStatement}`, 10, 40);
+    // Generate PDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.text(`Name: ${fullname}`, 10, 10);
+    doc.text("CC102 - Computer Programming 1", 10, 20);
+    doc.text("Midterm Performance Task", 10, 30);
+    doc.text(`Problem #${activityNumber}: ${problemStatement}`, 10, 40);
 
-            // Convert PDF to Base64
-            const pdfDataUri = doc.output("datauristring");
-            const pdfBase64 = pdfDataUri.split(",")[1]; // Only get the Base64 part
+    // Convert PDF to Base64
+    const pdfDataUri = doc.output("datauristring");
+    const pdfBase64 = pdfDataUri.split(",")[1]; // Only get the Base64 part
 
-            // Initialize EmailJS
-            emailjs.init("YOUR_EMAILJS_USER_ID");
+    // Initialize EmailJS
+    emailjs.init("YOUR_EMAILJS_USER_ID"); // Replace with your actual EmailJS user ID
 
-            // Send email with EmailJS
-            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-                to_name: fullname,
-                to_email: email,
-                activity_number: activityNumber,
-                problem_statement: problemStatement,
-                attachment: pdfBase64, // Attach PDF
-                teacher_email: "jgatdula@hccci.edu.ph"
-            }).then((response) => {
-                alert("Submission successful! Check your email for details.");
-                isSubmitted = true; // Prevent further submissions
-            }).catch((error) => {
-                alert("There was an error with your submission. Please try again.");
-                console.log(error);
-            });
-        }
+    // Send email with EmailJS
+    emailjs.send("service_id", "template_01azxk4", { // Replace "service_id" with your actual service ID
+        to_name: fullname,
+        to_email: email,
+        activity_number: activityNumber,
+        problem_statement: problemStatement,
+        attachment: pdfBase64, // Base64 PDF
+        teacher_email: "jgatdula@hccci.edu.ph"
+    })
+    .then((response) => {
+        alert("Submission successful! Check your email for details.");
+        isSubmitted = true; // Prevent further submissions
+    }).catch((error) => {
+        alert("There was an error with your submission. Please try again.");
+        console.log(error);
+    });
+}
+
     </script>
 </body>
 </html>
